@@ -4,8 +4,8 @@ import argparse
 import sys
 import logging
 
-from dump import __version__
-from dump.interface import postgres
+from python-pgdump import __version__
+from python-pgdump.interface import postgres
 
 
 def console_backup(args):
@@ -36,14 +36,16 @@ def console():
     parser.add_argument("--version", action='version', version="%(prog)s {}".format(__version__))
 
     parent_parser = argparse.ArgumentParser(add_help=False)
-    parent_parser.add_argument("-d", "--dbname", dest="dbname", help="database name to connect to")
+    parent_parser.add_argument("-d", "--dbname", dest="dbname", required=True, \
+		help="database name to connect to")
     parent_parser.add_argument("-U", "--username", "--user", dest="username", help="database user name")
-    parent_parser.add_argument("-W", "--password", dest="password", help="database password")
+    parent_parser.add_argument("-W", "--password", dest="password", \
+		help="database password. Required if no ~/.pgpass detected")
     parent_parser.add_argument(
         "-h", "--host", "--hostname",
         dest="host",
         default="localhost",
-        help="database server host or socket directory"
+        help="database server host or socket directory."
     )
     parent_parser.add_argument("-p", "--port", type=int, default=5432, dest="port", help="database server post")
     parent_parser.add_argument(
